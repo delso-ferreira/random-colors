@@ -17,8 +17,9 @@ for (let index = 0; index < container.length; index += 1) {
     colorCircle.style.padding = '5px';
     colorCircle.style.backgroundColor = randomColor();
     container[index].appendChild(colorCircle);
+    
   }
-}
+};
 
 const colorCircle = document.getElementsByClassName('ball');
 for (let index = 0; index < colorCircle.length; index += 1) {
@@ -33,6 +34,13 @@ for (let index = 0; index < colorCircle.length; index += 1) {
   });
 }
 
+const colorGuess = document.getElementById('rgb-color');
+for (let index = 0; index < colorCircle.length; index += 1) {
+  const rightColor = colorCircle[index].style.backgroundColor;
+  const splitColor = splitRGB(rightColor);
+  colorGuess.innerHTML = splitColor;
+}
+
 const diceRoll = () => Math.floor(Math.random() * 6);
 
 const resetBtn = document.getElementById('reset-game');
@@ -41,7 +49,7 @@ resetBtn.addEventListener('click', () => {
   const textAnswer = document.getElementById('answer');
   textAnswer.innerHTML = 'Escolha uma cor';
   const gabarito = diceRoll();
-  const colorGuess = document.getElementById('rgb-color');
+  /* const colorGuess = document.getElementById('rgb-color'); */
   for (let index = 0; index < colorCircle.length; index += 1) {
     colorCircle[index].style.backgroundColor = randomColor();
     if (index === gabarito) {
