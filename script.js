@@ -7,6 +7,7 @@ const randomColor = () => {
 };
 
 const splitRGB = (string) => string.split('b')[1];
+const score = document.getElementById('score');
 
 const container = document.getElementsByTagName('section');
 for (let index = 0; index < container.length; index += 1) {
@@ -17,9 +18,35 @@ for (let index = 0; index < container.length; index += 1) {
     colorCircle.style.padding = '5px';
     colorCircle.style.backgroundColor = randomColor();
     container[index].appendChild(colorCircle);
-    
+  }
+}
+
+const addScore = () => {
+  const currentScore = parseInt(score.innerText.split(' ')[1], 10);
+  score.innerText = `Placar: ${currentScore + 3}`;
+};
+
+const loseScore = () => {
+  const currentScore = parseInt(score.innerText.split(' ')[1], 10);
+  score.innerText = `Placar: ${currentScore - 1}`;
+  if (currentScore <= 0) {
+    score.innerText = 'Placar: 0';
+  }
+  else {
+    score.innerText = `Placar: ${currentScore - 1}`;
   }
 };
+
+const saveScore = () => {
+  localStorage.setItem('score', score.innerHTML);
+};
+saveScore();
+
+const loadScore = () => {
+  const savedScore = localStorage.getItem('score');
+  score.innerHTML = `Placar ${savedScore}`;
+};
+loadScore();
 
 const colorCircle = document.getElementsByClassName('ball');
 for (let index = 0; index < colorCircle.length; index += 1) {
@@ -28,8 +55,10 @@ for (let index = 0; index < colorCircle.length; index += 1) {
     const textAnswer = document.getElementById('answer');
     if (splitRGB(event.target.style.backgroundColor) === colorGuess.innerHTML) {
       textAnswer.innerHTML = 'Acertou!';
+      addScore();
     } else {
       textAnswer.innerHTML = 'Errou! Tente novamente!';
+      loseScore();
     }
   });
 }
@@ -48,14 +77,14 @@ const resetBtn = document.getElementById('reset-game');
 resetBtn.addEventListener('click', () => {
   const textAnswer = document.getElementById('answer');
   textAnswer.innerHTML = 'Escolha uma cor';
-  const gabarito = diceRoll();
-  /* const colorGuess = document.getElementById('rgb-color'); */
+  const feedback = diceRoll();
   for (let index = 0; index < colorCircle.length; index += 1) {
     colorCircle[index].style.backgroundColor = randomColor();
-    if (index === gabarito) {
+    if (index === feedback) {
       const rightColor = colorCircle[index].style.backgroundColor;
       const splitColor = splitRGB(rightColor);
       colorGuess.innerHTML = splitColor;
+      console.log(score.innerText);
     }
-  }
+    }
 });
